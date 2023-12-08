@@ -16,103 +16,62 @@ var listaUsuarios = [];
 function processarCadastroUsuario(requisicao, resposta) {
   const dados = requisicao.body;
   let conteudoResposta = '';
-  //validar os dados enviados
-  // a validação dos dados é de responsabilidade do servidor ou da aplicação
-  if (!(dados.nome && dados.sobrenome
-    && dados.email && dados.dataInicio)) {
-    //estão faltando dados do usuario!
+
+  // Validar os dados enviados
+  const erros = [];
+  if (!dados.nome) {
+    erros.push('O campo Nome é obrigatório');
+  }
+  // Adicione lógica para os outros campos
+
+  if (erros.length > 0) {
+    // Estão faltando dados do usuário!
     conteudoResposta = `
-<!doctype html>
-<html lang="pt-br">
-
-<head>
-  <title>Cadastro de Eventos</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css">
-  <script src="MascarasValidaCPF.js"></script>
-</head>
-
-<body>
-  <header>
-  </header>
-  <main class="background">
-    <div class="container mt-4 col-8">
-      <h1>Cadastro De Alunos em Eventos Universitários</h1>
-      <form action='/cadastro' method='POST' class="row g-3 needs-validation mt-4" novalidate>
-        <div class="col-md-2">
-          <label for="nome" class="form-label">RA</label>
-          <input type="text" class="form-control" id="ra" name="ra"  value="${dados.ra}" required>
-        </div>
-        `;
-    conteudoResposta += `
-        <div class="col-md-4">
-          <label for="nome" class="form-label">Nome</label>
-          <input type="text" class="form-control" id="nome" name="nome" value="${dados.nome}" required>
-        </div>
-        `;
-    if (!dados.nome) {
-      conteudoResposta += `
-        <div>
-          <p class="text-danger">O campo Nome é obrigatório</p>
-        </div>`;
-    }
-    conteudoResposta += `
-        <div class="col-md-6">
-          <label for="sobrenome" class="form-label">Sobrenome</label>
-          <input type="text" class="form-control" id="sobrenome" name="sobrenome" value="${dados.sobrenome}" required>
-        </div>
-        `;
-    if (!dados.sobrenome) {
-      conteudoResposta += `
-        <div>
-          <p class="text-danger">O campo Sobrenome é obrigatório</p>
-        </div>`;
-    }
-    conteudoResposta += `
-        <div class="col-md-6">
-          <label for="email" class="form-label">Email</label>
-          <input type="text" class="form-control" id="email" name="email" value="${dados.email}" required>
-        </div>
-        `;
-    if (!dados.email) {
-      conteudoResposta += `
-        <div>
-          <p class="text-danger">O campo Email é obrigatório</p>
-        </div>`;
-    }
-    conteudoResposta += `
-        <div class="col-md-3">
-          <label for="dataInicio" class="form-label">Data Inicio</label>
-          <input type="date" class="form-control" id="dataInicio" name="dataInicio" value="${dados.dataInicio}" required>
-        </div>
-        `;
-    if (!dados.dataInicio) {
-      conteudoResposta += `
-        <div>
-          <p class="text-danger">O campo Data Nascimento é obrigatório</p>
-        </div>`;
-    }
-    conteudoResposta += `
-        <div class="col-12">
-          <button class="btn btn-primary col-12" type="submit">Cadastrar</button>
-        </div>
-      </form>
-    </div>
-  </main>
-  <footer>
-  </footer>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-    </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-    </script>
-</body>
-
-</html>`;
+    <!doctype html>
+    <html lang="pt-br">
+      <head>
+        <title>Cadastro</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <script src="MascarasValidaCPF.js"></script>
+      </head>
+      <body>
+        <header></header>
+        <main class="background">
+          <div class="container mt-4 col-8">
+            <h1>Cadastro</h1>
+            <form action='/cadastro' method='POST' class="row g-3 needs-validation mt-4" novalidate>
+              ${erros.map(erro => `<div><p class="text-danger">${erro}</p></div>`).join('')}
+              <div class="col-md-5">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="nome" name="nome" value="${dados.nome}" required>
+              </div>
+              <div class="col-md-5">
+                <label for="sobrenome" class="form-label">Apelido</label>
+                <input type="text" class="form-control" id="sobrenome" name="sobrenome" value="${dados.sobrenome}" required>
+              </div>
+              <div class="col-md-5">
+                <label for="email" class="form-label">E-mail</label>
+                <input type="text" class="form-control" id="email" name="email" value="${dados.email}" required>
+              </div>
+              <div class="col-md-5">
+                <label for="dataInicio" class="form-label">Data de Nascimento</label>
+                <input type="date" class="form-control" id="dataInicio" name="dataInicio" value="${dados.dataInicio}" required>
+              </div>
+              <!-- Repita a lógica para os outros campos -->
+              <div class="col-12 mt-3">
+                <button class="btn btn-primary col-12" type="submit">Cadastrar</button>
+              </div>
+            </form>
+          </div>
+        </main>
+        <footer></footer>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
+      </body>
+    </html>`;
     resposta.end(conteudoResposta);
   }
   else {
