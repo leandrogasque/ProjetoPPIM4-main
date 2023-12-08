@@ -3,11 +3,10 @@ import http from 'http';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
-import { Server } from 'socket.io';
+
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
 
 const porta = 4000;
 const host = 'localhost';
@@ -237,15 +236,7 @@ app.get('/', autenticar, (requisicao, resposta) => {
     resposta.status(200).send('Mensagem recebida com sucesso!');
   });
 
-  io.on('connection', (socket) => {
-    console.log('Um cliente se conectou');
-
-    socket.on('message', (data) => {
-      // Reemitir a mensagem para todos os clientes conectados
-      io.emit('message', data);
-    });
-  });
-
+ 
   resposta.cookie("DataUltimoAcesso", data.toLocaleString(), {
     maxAge: 1000 * 60 * 60 * 24 * 30,
     httpOnly: true,
