@@ -23,7 +23,15 @@ function processarCadastroUsuario(requisicao, resposta) {
     erros.push('O campo Nome é obrigatório');
   }
   // Adicione lógica para os outros campos
-
+  if (!dados.sobrenome) {
+    erros.push('O campo Apelido é obrigatório');
+  }
+  if (!dados.email) {
+    erros.push('O campo E-mail é obrigatório');
+  }
+  if (!dados.dataInicio) {
+    erros.push('O campo Data de Nascimento é obrigatório');
+  }
   if (erros.length > 0) {
     // Estão faltando dados do usuário!
     conteudoResposta = `

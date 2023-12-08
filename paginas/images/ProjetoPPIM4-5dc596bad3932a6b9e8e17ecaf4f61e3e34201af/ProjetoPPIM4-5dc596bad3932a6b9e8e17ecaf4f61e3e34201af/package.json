@@ -1,0 +1,26 @@
+{
+  "name": "projetoppim4av",
+  "version": "1.0.0",
+  "description": "Projeto desenvolvido para a aula ao vivo n 4",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leandrogasque/PPIM4.git"
+  },
+  "author": "Leandro Gasque",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leandrogasque/PPIM4.git/issues"
+  },
+  "homepage": "https://github.com/leandrogasque/ProjetoPPIM3AV#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3"
+  }
+}
