@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Chat Local</title>
+
+    <style>
+        .chat {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    
+    <section class="container">
+
+        <section class="login">
+            <h2>Login</h2>
+            <form class="login__form">
+                <input type="text" class="login__input" placeholder="Seu nome" required />
+                <button type="submit" class="login__button">Entrar</button>
+            </form>
+        </section>
+
+        <section class="chat" style="display: none;">
+            <button class="chat__exit-button">Sair do Chat</button>
+            <section class="chat__messages"></section>
+            <form class="chat__form">
+                <input type="text" class="chat__input" placeholder="Digite uma mensagem" required />
+                <button type="submit" class="chat__button">Enviar</button>
+            </form>
+        </section>
+
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const login = document.querySelector(".login");
+            const loginForm = login.querySelector(".login__form");
+            const loginInput = login.querySelector(".login__input");
+
+            const chat = document.querySelector(".chat");
+            const chatForm = chat.querySelector(".chat__form");
+            const chatInput = chat.querySelector(".chat__input");
+            const chatMessages = chat.querySelector(".chat__messages");
+            const chatExitButton = chat.querySelector(".chat__exit-button");
+
+            const user = { name: "" };
+
+            const scrollScreen = () => {
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: "smooth"
+                });
+            };
+
+            const processMessage = (content) => {
+                const messageElement = document.createElement("div");
+                messageElement.className = "message--self";
+                messageElement.textContent = `${user.name}: ${content}`;
+                chatMessages.appendChild(messageElement);
+                scrollScreen();
+            };
+
+            const handleLogin = (event) => {
+                event.preventDefault();
+                user.name = loginInput.value;
+                login.style.display = "none";
+                chat.style.display = "flex";
+            };
+
+            const sendMessage = (event) => {
+                event.preventDefault();
+                const content = chatInput.value;
+                processMessage(content);
+                chatInput.value = "";
+            };
+
+            const exitChat = () => {
+                login.style.display = "flex";
+                chat.style.display = "none";
+                // Limpar mensagens ao sair, se desejar
+                chatMessages.innerHTML = "";
+            };
+
+            loginForm.addEventListener("submit", handleLogin);
+            chatForm.addEventListener("submit", sendMessage);
+            chatExitButton.addEventListener("click", exitChat);
+        });
+    </script>
+</body>
+</html>
